@@ -131,6 +131,8 @@
         <string name="theme">Thème</string>
         <string name="tache_termine_sonnerie">Tâche terminée Sonnerie</string>
         <string name="version">Version:1.0.0.0</string>
+        <string name="langues">Langues</string>
+
         <!-- Commentaires -->
         <string name="user_name">Zainab Wissal</string>
         <string name="first_comment">Cette application vaut vraiment le coup !</string>
@@ -146,4 +148,5 @@
         <string name="favorit">Favoris</string>
         <string name="Your_Data">Vos données</string>
         <string name="Long_Click">Appuyez longuement pour afficher les détails</string>
+
 </resources>

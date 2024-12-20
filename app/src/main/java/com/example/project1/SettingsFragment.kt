@@ -1,5 +1,9 @@
  package com.example.project1
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.my_calendr_chat.CardData
+import java.util.Locale
 
  // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,12 +34,14 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadLocale()
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +53,8 @@ class SettingsFragment : Fragment() {
         val notification = view.findViewById<LinearLayout>(R.id.notification)
         val theme = view.findViewById<LinearLayout>(R.id.themeP)
         val vibration = view.findViewById<LinearLayout>(R.id.tache_sone)
-        val version = view.findViewById<LinearLayout>(R.id.version)
+        val langues = view.findViewById<LinearLayout>(R.id.langue)
+
 
         synchronisation.setOnClickListener {
             showRecyclerViewDialog()
@@ -63,7 +71,7 @@ class SettingsFragment : Fragment() {
         vibration.setOnClickListener {
             showRecyclerViewDialog()
         }
-
+        langues.setOnClickListener { showLanguageDialog() }
 
         return view
     }
@@ -88,6 +96,56 @@ class SettingsFragment : Fragment() {
 
         dialog.show()
     }
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
+
+        // Sauvegarder la langue sélectionnée
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("App_Language", languageCode).apply()
+
+        // Rafraîchir le fragment sans redémarrer toute l'activité
+        val transaction = requireFragmentManager().beginTransaction()
+        transaction.detach(this)
+        transaction.attach(this)
+        transaction.commit()
+    }
+
+    private fun loadLocale() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val languageCode = sharedPreferences.getString("App_Language", "fr") ?: "fr" // Par défaut en français
+        setLocale(languageCode)
+    }
+
+
+
+    private fun getCurrentLanguage(): String {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("App_Language", "en") ?: "en"
+    }
+
+    private fun showLanguageDialog() {
+        val languageOptions = arrayOf("English", "Français")
+        val languageCodes = arrayOf("en", "fr")
+        val currentLanguage = getCurrentLanguage()
+
+        val selectedIndex = languageCodes.indexOf(currentLanguage)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.langues))
+            .setSingleChoiceItems(languageOptions, selectedIndex) { dialog, which ->
+                val selectedLanguageCode = languageCodes[which]
+                setLocale(selectedLanguageCode)
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.Dismiss)) { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+
 
     companion object {
         /**

@@ -64,7 +64,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="-180dp"
                     android:layout_weight="1"
-                    android:text="Task List"
+                    android:text="@string/TaskList"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
