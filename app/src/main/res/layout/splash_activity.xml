@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/splash_img"
@@ -23,9 +22,9 @@
         android:transitionName="splash_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="    Z and W \n Task Manager"
+        android:text="@string/slogan"
         android:textSize="28sp"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
