@@ -10,12 +10,11 @@ import com.example.project1.R
 import com.example.project1.classes.Category
 
 class CategoryAdapter2nd(
-    private val context: Context, // Corrigé pour être un Context
+    private val context: Context,
     private val categories: List<Category>,
-    private val onItemClick: (Category) -> Unit // Callback pour gérer les clics
+    private val onItemClick: (Category) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter2nd.CategoryViewHolder>() {
 
-    // ViewHolder pour contenir les vues de chaque élément
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.nameTextView)
         val subTitleTextView: TextView = itemView.findViewById(R.id.itemCountTextView)

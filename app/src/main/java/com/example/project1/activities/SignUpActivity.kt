@@ -26,10 +26,8 @@ class SignUpActivity : AppCompatActivity() {
             R.anim.bottom_animation
         )
         val signButtom = findViewById<Button>(R.id.signButton)
-        // Récupérer les vues
         val cardView = findViewById<CardView>(R.id.signCard)
         val toLogin = findViewById<TextView>(R.id.sing_up)
-        // Appliquer les animations
         cardView.startAnimation(bottomAnim)
 
         signButtom.setOnClickListener{

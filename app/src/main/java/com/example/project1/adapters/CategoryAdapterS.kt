@@ -30,16 +30,13 @@ class CategoryAdapterS(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View = convertView ?: LayoutInflater.from(context).inflate(R.layout.category_details, parent, false)
 
-        // Récupérer l'élément actuel
         val currentItem = items[position]
 
-        // Initialiser les vues
         val nameTextView: TextView = view.findViewById(R.id.nameTextView)
         val itemCountTextView: TextView = view.findViewById(R.id.itemCountTextView)
         val imageView: ImageView = view.findViewById(R.id.itemImageView)
         val iconView: ImageView = view.findViewById(R.id.iconImageView)
 
-        // Définir les valeurs des vues
         nameTextView.text = currentItem.title
         itemCountTextView.text = currentItem.taskNumber
         imageView.setImageResource(currentItem.image)

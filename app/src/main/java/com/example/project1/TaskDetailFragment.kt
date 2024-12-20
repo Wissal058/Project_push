@@ -42,7 +42,6 @@ class TaskDetailFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_detail2_mod, container, false)
 
-        // Initialiser les widgets
         editTextTitle = view.findViewById(R.id.editTextTitle)
         editTextDescription = view.findViewById(R.id.editTextDescription)
         spinnerPriority = view.findViewById(R.id.spinnerPriority)
@@ -60,7 +59,6 @@ class TaskDetailFragment : Fragment() {
             android.R.layout.simple_spinner_item, TaskPriority.values()
         )
 
-        // Récupérer les arguments pour la tâche
         arguments?.let {
             val taskId = it.getInt(ARG_TASK_ID)
             task = taskViewModel.tasks.value?.find { task -> task.id == taskId }
@@ -76,7 +74,6 @@ class TaskDetailFragment : Fragment() {
             )
             spinnerCategory.adapter = adapter
 
-            // Pré-sélectionner la catégorie de la tâche
             task?.let { task ->
                 val selectedIndex = categories.indexOfFirst { it.id == task.category.id }
                 if (selectedIndex != -1) {
@@ -85,7 +82,6 @@ class TaskDetailFragment : Fragment() {
             }
         }
 
-        // Remplir les champs avec les données de la tâche
         task?.let { task ->
             editTextTitle.setText(task.title)
             editTextDescription.setText(task.description)
@@ -95,7 +91,6 @@ class TaskDetailFragment : Fragment() {
             checkBoxFavorite.isChecked = task.isFavorite
         }
 
-        // Ajouter un DatePicker pour la dueDate
         calendarEdit.setOnClickListener {
             showDatePickerDialog()
         }

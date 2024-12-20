@@ -38,7 +38,6 @@ class AboutUsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_about_us, container, false)
 
 
@@ -58,7 +57,7 @@ class AboutUsFragment : Fragment() {
         textViewFb.movementMethod = LinkMovementMethod.getInstance()
 
         val textViewInst: TextView = view.findViewById(R.id.textWithLinkinstagram)
-        textViewGit.text = Html.fromHtml(
+        textViewInst.text = Html.fromHtml(
             "<a href='https://github.com/Wissal058/Test123.git'>GitHub</a>",
             Html.FROM_HTML_MODE_LEGACY
         )

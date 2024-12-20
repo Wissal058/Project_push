@@ -7,7 +7,7 @@
         <string name="close_navigation_bar" translatable="false">Fermer la navigation</string>
 
         <!-- Écran de démarrage -->
-        <string name="slogan">Le temps, c\'est de l\'argent</string>
+        <string name="slogan">Le temps... c\'est de l\'argent</string>
 
         <!-- Connexion / Inscription -->
         <string name="login">Connexion</string>

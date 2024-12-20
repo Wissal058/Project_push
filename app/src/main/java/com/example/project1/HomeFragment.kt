@@ -53,36 +53,27 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ajoout de date
-
-        // Récupération des TextViews
         val dateTextView = view.findViewById<TextView>(R.id.dateTextView)
         val timeTextView = view.findViewById<TextView>(R.id.timeTextView)
         val viewall = view.findViewById<TextView>(R.id.textView1)
 
-        // Obtenir la date actuelle
         val currentDateTime = LocalDateTime.now()
 
-        // Formatter la date et l'heure
         val dateFormatter = DateTimeFormatter.ofPattern("EEEE dd MMMM", Locale.getDefault())
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
 
-        // Afficher la date et l'heure
         dateTextView.text = "${currentDateTime.format(dateFormatter)}"
         timeTextView.text = "${currentDateTime.format(timeFormatter)}"
 
 
-        // Configure RecyclerView
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview)
 
-        // Sample data for RecyclerView
         val categories = listOf(
             Category(1, getString(R.string.Work), getString(R.string.WorkDesc), R.drawable.work),
             Category(2, getString(R.string.Personnel), getString(R.string.PersonnelDesc), R.drawable.travel),
             Category(3, getString(R.string.Hobby), getString(R.string.HobbyDesc), R.drawable.study)
         )
 
-        // Setup adapter
         val adapter = CategoryAdapter(requireContext(), categories) { category ->
             println("")
         }
@@ -91,41 +82,36 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        // CardView tasks
         val cardViewTask = view.findViewById<CardView>(R.id.cardViewTask)
         cardViewTask.setOnClickListener {
             cardViewTask.setBackgroundColor(R.color.blue)
-            // Remplacer par un autre Fragment
             val secondFragment = TaskFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_layout, secondFragment) // ID du container des fragments
-                .addToBackStack(null) // Ajouter à la pile pour permettre un retour
+                .replace(R.id.fragment_layout, secondFragment)
+                .addToBackStack(null)
                 .commitAllowingStateLoss()
 
         }
 
-        // CardView favorite tasks
         val cardViewFavoriteTask = view.findViewById<CardView>(R.id.cardViewFavorite)
         cardViewFavoriteTask.setOnClickListener {
             cardViewFavoriteTask.setBackgroundColor(R.color.blue)
-            // Remplacer par un autre Fragment
+
             val secondFragment = FavoriteTaskFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_layout, secondFragment) // ID du container des fragments
-                .addToBackStack(null) // Ajouter à la pile pour permettre un retour
+                .replace(R.id.fragment_layout, secondFragment)
+                .addToBackStack(null)
                 .commitAllowingStateLoss()
 
         }
 
-        // CardView task archive
         val cardViewArchive = view.findViewById<CardView>(R.id.cardViewArchive)
         cardViewArchive.setOnClickListener {
             cardViewArchive.setBackgroundColor(R.color.blue)
-            // Remplacer par un autre Fragment
             val secondFragment = ArchiveTaskFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_layout, secondFragment) // ID du container des fragments
-                .addToBackStack(null) // Ajouter à la pile pour permettre un retour
+                .replace(R.id.fragment_layout, secondFragment)
+                .addToBackStack(null)
                 .commitAllowingStateLoss()
 
         }
@@ -134,8 +120,8 @@ class HomeFragment : Fragment() {
        viewall.setOnClickListener{
             val secondFragment = CategoryFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_layout, secondFragment) // ID du container des fragments
-                .addToBackStack(null) // Ajouter à la pile pour permettre un retour
+                .replace(R.id.fragment_layout, secondFragment)
+                .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
     }

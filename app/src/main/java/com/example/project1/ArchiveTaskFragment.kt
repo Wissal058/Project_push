@@ -66,7 +66,6 @@ class ArchiveTaskFragment : Fragment() {
         }
         recyclerViewTask.adapter = adapterTaskArchive
 
-        // Configuration des gestes de swipe
         val swipeGestureArch = object : SwipeGestureArchive(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition

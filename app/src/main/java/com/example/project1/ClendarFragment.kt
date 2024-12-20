@@ -56,23 +56,18 @@ class ClendarFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
 
-        // Récupération des vues
         val calendarView: CalendarView = view.findViewById(R.id.calendarView)
         recyclerView = view.findViewById(R.id.recyclerViewDate)
         taskListTitle = view.findViewById(R.id.textViewTitle)
 
-        // Configuration du RecyclerView
         taskAdapter = TaskAdapter(mutableListOf()) { task ->
-            // Gestion des clics sur les tâches
             println("Tâche sélectionnée : ${task.title}")
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = taskAdapter
 
-        // Format de date utilisé (par exemple : "dd/MM/yyyy")
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        // Gérer la sélection de date dans CalendarView
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
             val tasksForDate = taskViewModel.getTasksForDate(selectedDate)

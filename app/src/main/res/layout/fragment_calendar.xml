@@ -14,14 +14,18 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
-        android:text="Task List"/>
+        android:layout_marginTop="360dp"
+        android:text="@string/TaskList"
+        android:textColor="@color/blue"
+        android:layout_marginLeft="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDate"
         android:layout_width="match_parent"
         android:layout_height="203dp"
-        android:layout_marginTop="360dp">
+        android:layout_marginTop="390dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 

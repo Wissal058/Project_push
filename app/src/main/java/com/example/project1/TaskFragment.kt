@@ -59,22 +59,17 @@ class TaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_all_task, container, false)
         val planning_img = view.findViewById<LinearLayout>(R.id.img_vide_task)
         val texteList = view.findViewById<TextView>(R.id.tskList)
 
-        // Initialisation de la RecyclerView
         val recyclerViewTask: RecyclerView = view.findViewById(R.id.recyclerViewTaskAllWissal)
         recyclerViewTask.layoutManager = LinearLayoutManager(requireContext())
 
-        // Initialisation de l'adaptateur
-        // Gestion du clic
+
         adapterTask = TaskAdapter(mutableListOf()) { task ->
-            // Crée une instance de TaskDetailFragment avec les détails de la tâche
             val detailFragment = TaskDetailFragment.newInstance(task.id)
 
-            // Navigation vers le fragment de détail
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_layout, detailFragment)
                 .addToBackStack(null)
@@ -93,7 +88,6 @@ class TaskFragment : Fragment() {
             }
         }
 
-        // Configuration des gestes de swipe
         val swipeGesture = object : SwipeGesture(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
@@ -103,7 +97,6 @@ class TaskFragment : Fragment() {
                     ItemTouchHelper.LEFT -> {
                         adapterTask.delete(position)
                         taskViewModel.removeTask(task)
-                        // Si vous avez une méthode pour supprimer dans le ViewModel
                         Toast.makeText(context, getString(R.string.TaskDeleted)+" : ${task.title}", Toast.LENGTH_SHORT).show()
                     }
                     ItemTouchHelper.RIGHT -> {
@@ -116,12 +109,10 @@ class TaskFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeGesture)
         itemTouchHelper.attachToRecyclerView(recyclerViewTask)
 
-        // Observer la liste des tâches
         taskViewModel.tasks.observe(viewLifecycleOwner) { tasks ->
             adapterTask.updateTasks(tasks)
         }
 
-        // Initialisation de la barre de recherche
         searchBar = view.findViewById(R.id.search)
         searchBar.addTextChangedListener { text ->
             val query = text.toString().lowercase()

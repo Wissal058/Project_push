@@ -52,21 +52,16 @@ class FavoriteTaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_favorite_task, container, false)
         val archive_img = view.findViewById<LinearLayout>(R.id.img_vide_favorite)
         val text = view.findViewById<TextView>(R.id.tskF)
 
-        // Initialisation de la RecyclerView
         val recyclerViewTask: RecyclerView = view.findViewById(R.id.recyclerViewFavoriteTask)
         recyclerViewTask.layoutManager = LinearLayoutManager(requireContext())
 
-        // Initialisation de l'adaptateur
         adapterTaskFavorite = TaskAdapter(mutableListOf()) { task ->
-            // Crée une instance de TaskDetailFragment avec les détails de la tâche
             val detailFragment = TaskDetailFragment.newInstance(task.id)
 
-            // Navigation vers le fragment de détail
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_layout, detailFragment)
                 .addToBackStack(null)
@@ -74,7 +69,6 @@ class FavoriteTaskFragment : Fragment() {
         }
         recyclerViewTask.adapter = adapterTaskFavorite
 
-        // Configuration des gestes de swipe
         val swipeGesture = object : SwipeGesture(requireContext()) {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -96,18 +90,15 @@ class FavoriteTaskFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeGesture)
         itemTouchHelper.attachToRecyclerView(recyclerViewTask)
 
-        // Observer la liste des tâches
         taskViewModel.tasks.observe(viewLifecycleOwner) { tasks ->
             val favoriteTasks = tasks.filter { it.isFavorite }
             adapterTaskFavorite.updateTasks(favoriteTasks)
             if (favoriteTasks.isEmpty()) {
-                // Si aucune tâche n'est archivée, afficher un message ou une vue vide
                 archive_img.visibility = View.VISIBLE
                 text.visibility = View.GONE
             }
         }
 
-        // Initialisation de la barre de recherche
         searchBarFavorite = view.findViewById(R.id.searchFavorite)
         searchBarFavorite.addTextChangedListener { text ->
             val query = text.toString().lowercase()

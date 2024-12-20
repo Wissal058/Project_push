@@ -1,6 +1,9 @@
 package com.example.project1.activities
 
 import LibraryFragment
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import TaskViewModel
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -53,6 +56,7 @@ import com.google.android.material.navigation.NavigationView
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private val taskViewModel: TaskViewModel by viewModels()
@@ -65,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        loadLocale()
         setContentView(R.layout.activity_main)
 
         // Initialisation des vues
@@ -366,10 +370,7 @@ class MainActivity : AppCompatActivity() {
             if (title.isBlank()) {
                 Toast.makeText(this, getString(R.string.titleNeeded), Toast.LENGTH_SHORT).show()
             } else {
-                // Créer une nouvelle tâche
                 val newCat = Category(taskViewModel.getCategorySize(),title, subtitle, R.drawable.work)
-
-                // Ajouter la tâche dans le ViewModel
                 taskViewModel.addCategory(newCat)
 
                 Toast.makeText(this, getString(R.string.CategoryAdded), Toast.LENGTH_SHORT).show()
@@ -383,4 +384,21 @@ class MainActivity : AppCompatActivity() {
         dialogCat.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialogCat.window?.setGravity(Gravity.CENTER)
     }
+    private fun loadLocale() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val languageCode = sharedPreferences.getString("App_Language", Locale.getDefault().language) ?: Locale.getDefault().language
+        setLocale(languageCode)
+    }
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = Configuration(resources.configuration)
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("App_Language", languageCode).apply()
+
+    }
 }
+

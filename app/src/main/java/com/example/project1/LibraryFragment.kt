@@ -40,14 +40,12 @@ class LibraryFragment : Fragment() {
         val pieChart = view.findViewById<PieChart>(R.id.pieChart)
         val lineChart = view.findViewById<LineChart>(R.id.lineChart)
 
-        // Observer les tâches
         taskViewModel.tasks.observe(viewLifecycleOwner, Observer { tasks ->
             updateBarChart(barChart, tasks)
             updatePieChart(pieChart, tasks)
             updateLineChart(lineChart, tasks)
         })
 
-        // Ajouter un long clic sur les CardView
         val cardViewBar = view.findViewById<CardView>(R.id.cardBarChart)
         val cardViewPie = view.findViewById<CardView>(R.id.cardPieChart)
         val cardViewLine = view.findViewById<CardView>(R.id.cardLineChart)

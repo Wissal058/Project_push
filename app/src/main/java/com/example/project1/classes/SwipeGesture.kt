@@ -38,7 +38,7 @@ abstract class SwipeGesture(context: Context) : ItemTouchHelper.SimpleCallback(0
         val itemView = viewHolder.itemView
         val iconMargin = (itemView.height - (deleteIcon?.intrinsicHeight ?: 0)) / 2
 
-        if (dX > 0) { // Swipe to the right
+        if (dX > 0) {
             paint.color = archiveColor
             c.drawRect(
                 itemView.left.toFloat(),
@@ -57,7 +57,7 @@ abstract class SwipeGesture(context: Context) : ItemTouchHelper.SimpleCallback(0
                 it.draw(c)
             }
 
-        } else if (dX < 0) { // Swipe to the left
+        } else if (dX < 0) {
             paint.color = deleteColor
             c.drawRect(
                 itemView.right + dX,

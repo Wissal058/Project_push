@@ -17,7 +17,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.sign_in)
-        // Charger les animations
+
         val topAnim = android.view.animation.AnimationUtils.loadAnimation(this,
             R.anim.top_animation
         )
@@ -25,10 +25,10 @@ class LoginActivity : AppCompatActivity() {
             R.anim.bottom_animation
         )
         val loginButtom = findViewById<Button>(R.id.login)
-        // Récupérer les vues
+
         val cardView = findViewById<CardView>(R.id.cardviewLogin)
         val toSignUp = findViewById<TextView>(R.id.toSignUp)
-        // Appliquer les animations
+
         cardView.startAnimation(bottomAnim)
 
        loginButtom.setOnClickListener{

@@ -34,7 +34,6 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadLocale()
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -71,7 +70,7 @@ class SettingsFragment : Fragment() {
         vibration.setOnClickListener {
             showRecyclerViewDialog()
         }
-        langues.setOnClickListener { showLanguageDialog() }
+        langues.setOnClickListener { changeLanguage(Locale("an")) }
 
         return view
     }
@@ -96,55 +95,13 @@ class SettingsFragment : Fragment() {
 
         dialog.show()
     }
-    private fun setLocale(languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val config = Configuration()
+
+    fun changeLanguage(locale: Locale) {
+        val config = Configuration(resources.configuration)
         config.setLocale(locale)
-        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
-
-        // Sauvegarder la langue sélectionnée
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        sharedPreferences.edit().putString("App_Language", languageCode).apply()
-
-        // Rafraîchir le fragment sans redémarrer toute l'activité
-        val transaction = requireFragmentManager().beginTransaction()
-        transaction.detach(this)
-        transaction.attach(this)
-        transaction.commit()
+        resources.updateConfiguration(config, resources.displayMetrics)
+        requireActivity().recreate()
     }
-
-    private fun loadLocale() {
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val languageCode = sharedPreferences.getString("App_Language", "fr") ?: "fr" // Par défaut en français
-        setLocale(languageCode)
-    }
-
-
-
-    private fun getCurrentLanguage(): String {
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("App_Language", "en") ?: "en"
-    }
-
-    private fun showLanguageDialog() {
-        val languageOptions = arrayOf("English", "Français")
-        val languageCodes = arrayOf("en", "fr")
-        val currentLanguage = getCurrentLanguage()
-
-        val selectedIndex = languageCodes.indexOf(currentLanguage)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.langues))
-            .setSingleChoiceItems(languageOptions, selectedIndex) { dialog, which ->
-                val selectedLanguageCode = languageCodes[which]
-                setLocale(selectedLanguageCode)
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.Dismiss)) { dialog, _ -> dialog.dismiss() }
-            .show()
-    }
-
 
 
     companion object {

@@ -49,25 +49,20 @@ class TaskViewModel : ViewModel() {
     }
 
     fun unarchiveTask(task: Task) {
-        // Vérifie si la liste des tâches archivées n'est pas nulle
         val archivedTasks = taskArch.value ?: mutableListOf()
         val mainTasks = tasks.value ?: mutableListOf()
 
-        // Rechercher la tâche dans les archivées
         val archivedTask = archivedTasks.find { it.id == task.id }
 
         if (archivedTask != null) {
-            // Supprimer la tâche de la liste des archivées
             val updatedArchivedTasks = archivedTasks.toMutableList()
             updatedArchivedTasks.remove(archivedTask)
             taskArch.value = updatedArchivedTasks
 
-            // Ajouter une copie désarchivée dans la liste principale
             val updatedMainTasks = mainTasks.toMutableList()
             updatedMainTasks.add(archivedTask.copy(isArchived = false))
             tasks.value = updatedMainTasks
 
-            // Pas besoin de notifyChange ici car les listes sont réassignées
         } else {
             println("Erreur : Tâche introuvable pour désarchivage.")
         }
@@ -84,7 +79,7 @@ class TaskViewModel : ViewModel() {
     }
 
     fun markAsFavorite(task: Task) {
-        tasks.value?.remove(task) // Supprime de la liste principale
+        tasks.value?.remove(task)
         taskFav.value = taskFav.value?.apply {
             add(task.copy(isFavorite = true))
         } ?: mutableListOf(task.copy(isFavorite = true))
@@ -140,10 +135,9 @@ class TaskViewModel : ViewModel() {
 
 }
 
-// Extension pour forcer LiveData à notifier les observateurs
 
 fun <T> MutableLiveData<MutableList<T>>.notifyChange() {
-    this.value = this.value?.toMutableList() // Crée une nouvelle liste mutable pour forcer la mise à jour
+    this.value = this.value?.toMutableList()
 }
 
 
