@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Managing"
+        android:text="@string/Managing"
         android:textColor="@color/white"
         android:textStyle="bold"/>
     <!--

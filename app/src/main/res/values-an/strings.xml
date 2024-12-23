@@ -148,5 +148,10 @@
     <string name="editTextDueDate">Due date (YYYY-MM-DD)</string>
     <string name="favorit">Favorites</string>
     <string name="Your_Data">Your data</string>
+    <string name="signUp">Sign Up</string>
+    <string name="Managing">Task Managing</string>
     <string name="Long_Click">Long press to view details</string>
+    <string name="newCat"> New Category </string>
+    <string name="subtitleCat"> Subtitle </string>
+
 </resources>

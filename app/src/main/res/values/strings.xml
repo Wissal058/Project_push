@@ -147,6 +147,11 @@
         <string name="editTextDueDate">Date d\'échéance (AAAA-MM-JJ)</string>
         <string name="favorit">Favoris</string>
         <string name="Your_Data">Vos données</string>
+        <string name="signUp">Inscription</string>
+        <string name="Managing">Gestion des tâches</string>
+        <string name="newCat"> Nouvelle Catégorie </string>
         <string name="Long_Click">Appuyez longuement pour afficher les détails</string>
+        <string name="subtitleCat"> Sous-titre </string>
+
 
 </resources>
