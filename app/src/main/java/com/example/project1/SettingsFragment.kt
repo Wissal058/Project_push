@@ -2,7 +2,6 @@
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,7 +68,11 @@ class SettingsFragment : Fragment() {
         vibration.setOnClickListener {
             showRecyclerViewDialog()
         }
-        langues.setOnClickListener { changeLanguage(Locale("an")) }
+        langues.setOnClickListener {
+            val currentLanguage = getSavedLanguage() ?: "fr" // Langue par défaut (par exemple, français)
+            val newLanguage = if (currentLanguage == "fr") "en" else "fr" // Alterner entre français et anglais
+            setLocale(newLanguage)
+        }
 
         return view
     }
@@ -99,10 +101,31 @@ class SettingsFragment : Fragment() {
     fun changeLanguage(locale: Locale) {
         val config = Configuration(resources.configuration)
         config.setLocale(locale)
+        requireContext().createConfigurationContext(config)
+        requireActivity().recreate() // Recrée l'activité pour appliquer le changement
+    }
+
+    private fun setLocale(localeCode: String) {
+        val locale = Locale(localeCode)
+        Locale.setDefault(locale)
+        val config = Configuration(resources.configuration)
+        config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
+
+        // Enregistrer la langue sélectionnée dans SharedPreferences
+        val sharedPreferences = requireActivity().getSharedPreferences("LanguageSettings", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("SelectedLanguage", localeCode)
+        editor.apply()
+
+        // Recharger l'activité
         requireActivity().recreate()
     }
 
+    private fun getSavedLanguage(): String? {
+        val sharedPreferences = requireActivity().getSharedPreferences("LanguageSettings", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("SelectedLanguage", null)
+    }
 
     companion object {
         /**

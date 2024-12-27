@@ -1,9 +1,14 @@
 package com.example.project1.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
@@ -75,7 +80,7 @@ class TaskAdapter(
         return if (position in tasks.indices) {
             val removedTask = tasks.removeAt(position)
             notifyItemRemoved(position)
-            removedTask // Retourne la tâche supprimée pour synchronisation avec le ViewModel
+            removedTask
         } else {
             null
         }
@@ -85,17 +90,24 @@ class TaskAdapter(
     val currentTasks: List<Task>
         get() = tasks
 
+    @SuppressLint("MissingInflatedId")
     private fun showCompletionDialog(context: Context, taskTitle: String) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.terminee, null)
-        AlertDialog.Builder(context)
+        val ok = dialogView.findViewById<Button>(R.id.ok)
+        val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
-            .setTitle("Tâche terminée")
-            .setMessage("La tâche \"$taskTitle\" est marquée comme terminée.")
-            .setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
-            }
             .create()
-            .show()
+
+        dialog.window?.apply {
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // Fond transparent
+            setGravity(Gravity.CENTER) // Centrer le dialogue à l'écran
+        }
+        dialog.show()
+        ok.setOnClickListener{
+            dialog.dismiss()
+        }
+
     }
 
 

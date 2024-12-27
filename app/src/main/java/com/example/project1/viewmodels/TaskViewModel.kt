@@ -150,8 +150,6 @@ class TaskViewModel : ViewModel() {
         return tasks.value?.filter { it.dueDate == date } ?: emptyList()
     }
 
-
-
 }
 
 

@@ -69,7 +69,10 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadLocale()
+        val savedLanguage = getSavedLanguage()
+        if (savedLanguage != null) {
+            setLocale(savedLanguage)
+        }
         setContentView(R.layout.activity_main)
 
         // Initialisation des vues
@@ -179,6 +182,11 @@ class MainActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)
+    }
+    //////////////////////////////
+    private fun getSavedLanguage(): String? {
+        val sharedPreferences = this.getSharedPreferences("LanguageSettings", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("SelectedLanguage", null)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

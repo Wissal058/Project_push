@@ -50,7 +50,7 @@ class AboutUsFragment : Fragment() {
 
         val textViewFb: TextView = view.findViewById(R.id.textWithLinkfeecbok)
         textViewFb.text = Html.fromHtml(
-            "<a href='https://github.com/Wissal058/Test123.git'>GitHub</a>",
+            "<a href='https://github.com/Wissal058/Test123.git'>Facebook</a>",
             Html.FROM_HTML_MODE_LEGACY
         )
 
@@ -58,7 +58,7 @@ class AboutUsFragment : Fragment() {
 
         val textViewInst: TextView = view.findViewById(R.id.textWithLinkinstagram)
         textViewInst.text = Html.fromHtml(
-            "<a href='https://github.com/Wissal058/Test123.git'>GitHub</a>",
+            "<a href='https://www.instagram.com/wis_sal58/profilecard/?igsh=MWJkejhtMnJvaHFxcg=='>Instagram</a>",
             Html.FROM_HTML_MODE_LEGACY
         )
         textViewInst.movementMethod = LinkMovementMethod.getInstance()
