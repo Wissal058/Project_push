@@ -1,4 +1,4 @@
- package com.example.project1
+package com.example.project1
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -43,7 +43,6 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
          val view = inflater.inflate(R.layout.setting, container, false)
         val synchronisation = view.findViewById<LinearLayout>(R.id.synchronisation)
         val widgets = view.findViewById<LinearLayout>(R.id.widget)
@@ -112,13 +111,11 @@ class SettingsFragment : Fragment() {
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
 
-        // Enregistrer la langue sélectionnée dans SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences("LanguageSettings", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("SelectedLanguage", localeCode)
         editor.apply()
-
-        // Recharger l'activité
+        // recharger l'activité
         requireActivity().recreate()
     }
 
