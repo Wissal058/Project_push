@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_margin="0dp"
         android:padding="0dp">
 
         <LinearLayout
@@ -52,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/gray2"
-            android:text="@string/description"
+            android:hint="@string/description"
             style="@style/details"/>
 
         <TextView
@@ -73,11 +74,7 @@
             android:enabled="false" />
 
         <!-- Date de création -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+
             <TextView
                 android:id="@+id/textViewCreationDate"
                 android:layout_width="wrap_content"
@@ -87,26 +84,33 @@
                 android:textColor="@color/gray2"
                 android:text="@string/date_creation" />
 
-            <ImageButton
-                android:id="@+id/calendarEdit"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="7dp"
-                android:background="@color/blue"
-                android:layout_marginLeft="200dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/calendar"
-                />
-        </LinearLayout>
+
 
         <!-- Date d'échéance -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
         <TextView
             android:id="@+id/editTextDueDate"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/editTextDueDate"
             android:layout_marginTop="30dp"
             style="@style/details" />
+
+        <ImageButton
+            android:id="@+id/calendarEdit"
+            android:layout_width="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="100dp"
+            android:background="@color/blue"
+            android:layout_height="45dp"
+            android:src="@drawable/calendar"
+            />
+    </LinearLayout>
 
         <!-- Catégorie -->
 

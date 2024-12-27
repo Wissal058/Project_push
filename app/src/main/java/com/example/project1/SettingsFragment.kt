@@ -68,8 +68,8 @@ class SettingsFragment : Fragment() {
             showRecyclerViewDialog()
         }
         langues.setOnClickListener {
-            val currentLanguage = getSavedLanguage() ?: "fr" // Langue par défaut (par exemple, français)
-            val newLanguage = if (currentLanguage == "fr") "en" else "fr" // Alterner entre français et anglais
+            val currentLanguage = getSavedLanguage() ?: "fr"
+            val newLanguage = if (currentLanguage == "fr") "en" else "fr"
             setLocale(newLanguage)
         }
 
