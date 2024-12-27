@@ -67,6 +67,7 @@ class FavoriteTaskFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
         recyclerViewTask.adapter = adapterTaskFavorite
 
         val swipeGesture = object : SwipeGesture(requireContext()) {
@@ -75,18 +76,25 @@ class FavoriteTaskFragment : Fragment() {
                 val position = viewHolder.adapterPosition
                 val task = adapterTaskFavorite.getTaskAtPosition(position)
 
-                when (direction) {
-                    ItemTouchHelper.LEFT -> {
-                        taskViewModel.removeTask(task)
-                        Toast.makeText(context, getString(R.string.TaskDeleted)+" : ${task.title}", Toast.LENGTH_SHORT).show()
+                if (task != null) {
+                    when (direction) {
+                        ItemTouchHelper.LEFT -> {
+                            adapterTaskFavorite.removeTaskAtPosition(position) // Mise à jour visuelle
+                            taskViewModel.removeTask(task) // Mise à jour des données
+                            Toast.makeText(context, getString(R.string.TaskDeleted) + " : ${task.title}", Toast.LENGTH_SHORT).show()
+                        }
+                        ItemTouchHelper.RIGHT -> {
+                            adapterTaskFavorite.removeTaskAtPosition(position) // Mise à jour visuelle
+                            taskViewModel.archiveTask(task) // Archivage dans le ViewModel
+                            Toast.makeText(context, getString(R.string.TaskArchived) + " ${task.title}", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    ItemTouchHelper.RIGHT -> {
-                        taskViewModel.archiveTask(task)
-                        Toast.makeText(context, getString(R.string.TaskArchived)+" ${task.title}", Toast.LENGTH_SHORT).show()
-                    }
+                } else {
+                    Toast.makeText(context, "TaskNotFound", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
         val itemTouchHelper = ItemTouchHelper(swipeGesture)
         itemTouchHelper.attachToRecyclerView(recyclerViewTask)
 

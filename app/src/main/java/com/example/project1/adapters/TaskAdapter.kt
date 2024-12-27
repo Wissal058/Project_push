@@ -8,7 +8,6 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project1.R
 import com.example.project1.classes.Task
@@ -48,12 +47,14 @@ class TaskAdapter(
         checkBox.isChecked = task.isCompleted
 
         checkBox.setOnCheckedChangeListener { _, isChecked ->
-            task.isCompleted = isChecked
-            notifyItemChanged(position)
-            if (isChecked) {
-                showCompletionDialog(holder.itemView.context, task.title)
+            if (task.isCompleted != isChecked) { // Évitez les appels redondants
+                task.isCompleted = isChecked
+                if (isChecked) {
+                    showCompletionDialog(holder.itemView.context, task.title)
+                }
             }
         }
+
         holder.itemView.setOnClickListener { onItemClick(task) }
 
         holder.favoriteIcon.setOnClickListener {
@@ -70,40 +71,19 @@ class TaskAdapter(
         notifyDataSetChanged()
     }
 
-
-    fun archiveTask(position: Int): Task? {
+    fun removeTaskAtPosition(position: Int): Task? {
         return if (position in tasks.indices) {
-            val archivedTask = tasks.removeAt(position)
+            val removedTask = tasks.removeAt(position)
             notifyItemRemoved(position)
-            archivedTask
+            removedTask // Retourne la tâche supprimée pour synchronisation avec le ViewModel
         } else {
             null
         }
     }
 
-    fun removeTaskAtPosition(position: Int) {
-        if (position in tasks.indices) {
-            tasks.removeAt(position)
-            notifyItemRemoved(position)
-        }
-    }
 
     val currentTasks: List<Task>
         get() = tasks
-
-    fun delete(position: Int) {
-        if (position in tasks.indices) {
-            tasks.removeAt(position)
-            notifyItemRemoved(position)
-        }
-    }
-
-    fun addItem(position: Int, task: Task) {
-        if (position in 0..tasks.size) {
-            tasks.add(position, task)
-            notifyItemInserted(position)
-        }
-    }
 
     private fun showCompletionDialog(context: Context, taskTitle: String) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.terminee, null)
@@ -119,5 +99,12 @@ class TaskAdapter(
     }
 
 
-    fun getTaskAtPosition(position: Int): Task = tasks[position]
+    fun getTaskAtPosition(position: Int): Task? {
+        return if (position in tasks.indices) {
+            tasks[position]
+        } else {
+            null
+        }
+    }
+
 }

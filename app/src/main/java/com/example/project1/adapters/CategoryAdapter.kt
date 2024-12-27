@@ -8,6 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project1.R
 import com.example.project1.classes.Category
+import com.example.project1.classes.Task
 
 class CategoryAdapter(
     private val context: Context,
@@ -29,7 +30,7 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categories[position]
         holder.titleTextView.text = category.title
-        holder.subTitleTextView.text = category.taskNumber
+        holder.subTitleTextView.text = category.taskNumber.toString()
         holder.imageView.setImageResource(category.image)
 
         holder.itemView.setOnClickListener {
@@ -38,5 +39,7 @@ class CategoryAdapter(
     }
 
     override fun getItemCount(): Int = categories.size
+
+
 
 }

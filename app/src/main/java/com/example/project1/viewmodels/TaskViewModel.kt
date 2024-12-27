@@ -37,32 +37,51 @@ class TaskViewModel : ViewModel() {
     }
 
     fun removeTask(task: Task) {
-        tasks.value?.remove(task)
-        tasks.notifyChange()
+        val mainTasks = tasks.value ?: return
+        val updatedTasks = mainTasks.toMutableList().apply { remove(task) }
+        tasks.value = updatedTasks
+    }
+    fun removeTaskArch(task: Task) {
+        val mainTasks = taskArch.value ?: return
+        val updatedTasks = mainTasks.toMutableList().apply { remove(task) }
+        taskArch.value = updatedTasks
     }
 
     fun archiveTask(task: Task) {
-        tasks.value?.remove(task)
-        taskArch.value?.add(task.copy(isArchived = true))
-        tasks.notifyChange()
-        taskArch.notifyChange()
+        val mainTasks = tasks.value ?: return
+        val archivedTasks = taskArch.value ?: mutableListOf()
+
+        // Trouver et archiver la tâche
+        val taskToArchive = mainTasks.find { it.id == task.id } ?: return
+
+        val updatedTasks = mainTasks.toMutableList().apply { remove(taskToArchive) }
+        val updatedArchivedTasks = archivedTasks.toMutableList().apply {
+            add(taskToArchive.copy(isArchived = true))
+        }
+
+        // Mettre à jour les LiveData
+        tasks.value = updatedTasks
+        taskArch.value = updatedArchivedTasks
+        println("Task archived: ${task.title}")
     }
 
     fun unarchiveTask(task: Task) {
         val archivedTasks = taskArch.value ?: mutableListOf()
         val mainTasks = tasks.value ?: mutableListOf()
 
+        // Trouver la tâche dans les archives
         val archivedTask = archivedTasks.find { it.id == task.id }
 
         if (archivedTask != null) {
-            val updatedArchivedTasks = archivedTasks.toMutableList()
-            updatedArchivedTasks.remove(archivedTask)
+            val updatedArchivedTasks = archivedTasks.toMutableList().apply { remove(archivedTask) }
             taskArch.value = updatedArchivedTasks
 
-            val updatedMainTasks = mainTasks.toMutableList()
-            updatedMainTasks.add(archivedTask.copy(isArchived = false))
+            val updatedMainTasks = mainTasks.toMutableList().apply {
+                add(archivedTask.copy(isArchived = false))
+            }
             tasks.value = updatedMainTasks
 
+            println("Task unarchived: ${task.title}")
         } else {
             println("Erreur : Tâche introuvable pour désarchivage.")
         }
@@ -137,8 +156,9 @@ class TaskViewModel : ViewModel() {
 
 
 fun <T> MutableLiveData<MutableList<T>>.notifyChange() {
-    this.value = this.value?.toMutableList()
+    this.value = this.value?.toMutableList()// Pas besoin de recréer la liste à chaque fois
 }
+
 
 
 

@@ -2,7 +2,6 @@ package com.example.project1
 
 import TaskViewModel
 import android.annotation.SuppressLint
-import android.content.ClipData.Item
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,11 +19,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project1.adapters.TaskAdapter
-import com.example.project1.classes.Category
 import com.example.project1.classes.SwipeGesture
 import com.example.project1.classes.Task
-import com.example.project1.classes.TaskPriority
-import java.util.Date
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,7 +78,6 @@ class TaskFragment : Fragment() {
         taskViewModel.tasks.observe(viewLifecycleOwner) { tasks ->
             adapterTask.updateTasks(tasks)
             if (tasks.isEmpty()) {
-                // Si aucune tâche n'est archivée, afficher un message ou une vue vide
                 planning_img.visibility = View.VISIBLE
                 texteList.visibility = View.GONE
             }
@@ -93,19 +88,23 @@ class TaskFragment : Fragment() {
                 val position = viewHolder.adapterPosition
                 val task = adapterTask.getTaskAtPosition(position)
 
-                when (direction) {
-                    ItemTouchHelper.LEFT -> {
-                        adapterTask.delete(position)
-                        taskViewModel.removeTask(task)
-                        Toast.makeText(context, getString(R.string.TaskDeleted)+" : ${task.title}", Toast.LENGTH_SHORT).show()
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        taskViewModel.archiveTask(task)
-                        Toast.makeText(context, getString(R.string.TaskArchived)+" ${task.title}", Toast.LENGTH_SHORT).show()
+                if (task != null) {
+                    when (direction) {
+                        ItemTouchHelper.LEFT -> {
+                            adapterTask.removeTaskAtPosition(position) // Supprimer de l'adaptateur
+                            taskViewModel.removeTask(task) // Supprimer du ViewModel
+                            Toast.makeText(context, getString(R.string.TaskDeleted) + " : ${task.title}", Toast.LENGTH_SHORT).show()
+                        }
+                        ItemTouchHelper.RIGHT -> {
+                            adapterTask.removeTaskAtPosition(position)
+                            taskViewModel.archiveTask(task)
+                            Toast.makeText(context, getString(R.string.TaskArchived) + " : ${task.title}", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
         }
+
         val itemTouchHelper = ItemTouchHelper(swipeGesture)
         itemTouchHelper.attachToRecyclerView(recyclerViewTask)
 

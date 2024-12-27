@@ -62,28 +62,33 @@ class ArchiveTaskFragment : Fragment() {
 
         // Initialisation de l'adaptateur
         adapterTaskArchive = TaskAdapter(mutableListOf()) { task ->
-            Toast.makeText(context, "Selected task : ${task.title}", Toast.LENGTH_SHORT).show()
+            val detailFragment = TaskDetailFragment.newInstance(task.id)
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_layout, detailFragment)
+                .addToBackStack(null)
+                .commit()
         }
         recyclerViewTask.adapter = adapterTaskArchive
+
 
         val swipeGestureArch = object : SwipeGestureArchive(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val task = adapterTaskArchive.getTaskAtPosition(position)
 
-                when (direction) {
-                    ItemTouchHelper.LEFT -> {
-                        // Supprime la tâche
+                if (task != null) {
+                    when (direction) {
+                        ItemTouchHelper.LEFT -> {
+                            adapterTaskArchive.removeTaskAtPosition(position) // Retirer de l'adaptateur
+                            taskViewModel.removeTaskArch(task) // Retirer de la liste principale
+                            Toast.makeText(context, getString(R.string.TaskDeleted) + " : ${task.title}", Toast.LENGTH_SHORT).show()
+                        }
+                        ItemTouchHelper.RIGHT -> {
                             adapterTaskArchive.removeTaskAtPosition(position)
-                            taskViewModel.removeTask(task)// Retirer la tâche désarchivée de l'archive
-                            Toast.makeText(context, getString(R.string.TaskDeleted)+" : ${task.title}", Toast.LENGTH_SHORT).show()
-
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        // Désarchive la tâche
-                        taskViewModel.unarchiveTask(task)
-                        adapterTaskArchive.removeTaskAtPosition(position) // Retirer la tâche désarchivée de l'archive
-                        Toast.makeText(context, getString(R.string.TaskDesArchived)+" ${task.title}", Toast.LENGTH_SHORT).show()
+                            taskViewModel.unarchiveTask(task)
+                            Toast.makeText(context, getString(R.string.TaskDesArchived) + " : ${task.title}", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
@@ -103,7 +108,6 @@ class ArchiveTaskFragment : Fragment() {
                 texteAr.visibility = View.VISIBLE
             }
         }
-
 
         // Initialisation de la barre de recherche
         searchBarArchive = view.findViewById(R.id.searchArchive)
