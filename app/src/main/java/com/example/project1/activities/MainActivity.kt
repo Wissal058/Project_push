@@ -392,11 +392,6 @@ class MainActivity : AppCompatActivity() {
         dialogCat.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialogCat.window?.setGravity(Gravity.CENTER)
     }
-    private fun loadLocale() {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        val languageCode = sharedPreferences.getString("App_Language", Locale.getDefault().language) ?: Locale.getDefault().language
-        setLocale(languageCode)
-    }
 
     private fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)

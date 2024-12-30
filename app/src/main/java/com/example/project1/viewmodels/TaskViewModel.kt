@@ -6,7 +6,6 @@ import com.example.project1.R
 import com.example.project1.classes.Category
 import com.example.project1.classes.Task
 import com.example.project1.classes.TaskPriority
-import java.util.Date
 import java.time.LocalDate
 
 
@@ -97,16 +96,6 @@ class TaskViewModel : ViewModel() {
         return categories.value?.size ?: 0
     }
 
-    fun markAsFavorite(task: Task) {
-        tasks.value?.remove(task)
-        taskFav.value = taskFav.value?.apply {
-            add(task.copy(isFavorite = true))
-        } ?: mutableListOf(task.copy(isFavorite = true))
-        tasks.notifyChange()
-        taskFav.notifyChange()
-    }
-
-
     fun updateTask(task: Task) {
         when {
             task.isArchived -> {
@@ -154,7 +143,7 @@ class TaskViewModel : ViewModel() {
 
 
 fun <T> MutableLiveData<MutableList<T>>.notifyChange() {
-    this.value = this.value?.toMutableList()// Pas besoin de recréer la liste à chaque fois
+    this.value = this.value?.toMutableList()
 }
 
 
